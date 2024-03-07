@@ -74,8 +74,23 @@
 
 .adv-input{
     display:grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 200px 300px;
     column-gap: 10px;
+    margin: 25px 35px;
+    align-items: center;
+    row-gap: 15px;
+}
+.adv-button-wrapper{
+    display: flex;
+    justify-content: flex-end;
+    width: 545px;
+}
+
+.adv-button{
+    background-color: #4d90fe;
+    border-radius: 5px;
+    border: 1px solid #3079ed;
+    color: #fff;
 }
 
 .advInput-label{
@@ -85,4 +100,20 @@
 .logo-wrapper{
     display: flex;
     justify-content: center;
+}
+
+.main-search-wrapper{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.head-span-advance{
+    color: red;
+    margin: 25px 35px;
+    font-size: 25px;
+}
+
+.span-advance{
+    margin: 25px 35px;
 }
