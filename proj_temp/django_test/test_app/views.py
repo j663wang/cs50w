@@ -10,3 +10,8 @@ def helloWorld(request):
 
 def greet(request, name):
     return HttpResponse(f"Hi {name}")
+
+def test(request, input):
+    return render(request,"test/test.html",{
+        "var": input
+    })
