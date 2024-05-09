@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'test_app',
     'check_date',
+    'manage_task',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

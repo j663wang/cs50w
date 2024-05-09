@@ -1,10 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
-<body>
-    <h1>Current date: {{currentDate}}</h1>
-    <h1>Is it new year?</h1>
-    {% if isNewYear %}
-        <h1> Yes </h1>
-    {% else %}
-        <h1> No </h1>
-    {% endif %}
-</body>
+<html lang="en">
+    <head>
+        <link href="{% static 'check_date/style.css' %}", rel="stylesheet">
+    </head>
+    <body>
+        <h1>Current date: {{currentDate}}</h1>
+        <h1>Is it new year?</h1>
+        {% if isNewYear %}
+            <h1> Yes </h1>
+        {% else %}
+            <h1> No </h1>
+        {% endif %}
+    </body>
+</html>
