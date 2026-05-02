@@ -2,8 +2,10 @@
 
 {% block title %}
     {{ name }}
+    
 {% endblock %}
 
 {% block body %}
     {{ entry | safe}}
+    <button class="btn btn-primary"><a href="{% url 'wiki:edit' name %}">Edit Page</a></button>
 {% endblock %}

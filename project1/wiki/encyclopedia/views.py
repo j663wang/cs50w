@@ -38,3 +38,34 @@ def search(request):
                 "entries": results,
                 "name": query
             })
+        
+def create(request):
+    if request.method == "POST":
+        title = request.POST.get("title", "")
+        content = request.POST.get("content", "")
+        if util.get_entry(title) is not None:
+            return render(request, "encyclopedia/error.html", {
+                "message": "An entry with this title already exists."
+            })
+        else:
+            util.save_entry(title, content)
+            return HttpResponseRedirect(reverse("wiki:entry", args=[title]))
+    else:
+        return render(request, "encyclopedia/create.html")
+    
+def edit(request, name):
+    if request.method == "POST":
+        content = request.POST.get("content", "")
+        util.save_entry(name, content)
+        return HttpResponseRedirect(reverse("wiki:entry", args=[name]))
+    else:
+        entry_content = util.get_entry(name)
+        if entry_content is None:
+            return render(request, "encyclopedia/error.html", {
+                "message": "Entry not found."
+            })
+        else:
+            return render(request, "encyclopedia/edit.html", {
+                "name": name,
+                "content": entry_content
+            })
