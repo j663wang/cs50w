@@ -36,3 +36,11 @@ textarea {
 .sidebar h2 {
     margin-top: 5px;
 }
+
+.btn {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+}
