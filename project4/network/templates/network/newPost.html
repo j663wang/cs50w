@@ -1,0 +1,15 @@
+{% extends "network/layout.html" %}
+
+{% block title %}New Post{% endblock %}
+
+{% block body %}
+    <h1>New Post</h1>
+    <form method="POST">
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="postContent" placeholder="What is on your mind?">
+        </div>
+        <div class="form-group">
+            <input class="btn btn-primary" type="submit" value="Post">
+        </div>
+    </form>
+{% endblock %}

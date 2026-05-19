@@ -1,15 +1,32 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import Paginator
+import json
 
-from .models import User
+from .models import *
 
 
 def index(request):
-    return render(request, "network/index.html")
-
+    posts = Post.objects.all().order_by("-timestamp")
+    if posts.count() == 0:
+        return JsonResponse({
+        "posts": [],
+        "total_pages": 0,
+        "current_page": 0
+    })
+    else:
+        posts = Post.objects.all().order_by('-timestamp')
+        paginator = Paginator(posts, 10)  # 10 posts per page
+        page_num = request.GET.get('page', 1)
+        page = paginator.get_page(page_num)
+        return JsonResponse({
+        "posts": [{"content": p.content, "user": p.user.username} for p in page],
+        "total_pages": paginator.num_pages,
+        "current_page": page.number
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -61,3 +78,12 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+    
+def newPost(request):
+    if request.method == "POST":
+        content = request.POST["postContent"]
+        post = Post(user=request.user, content=content)
+        post.save()
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "network/newPost.html")
