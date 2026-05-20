@@ -5,6 +5,10 @@
 {% block body %}
     <h1>New Post</h1>
     <form method="POST">
+        {% csrf_token %}
+        <divclass="form-group">
+            <input class="form-control" autofocus type="text" name="postTitle" placeholder="Title">
+        </div>
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="postContent" placeholder="What is on your mind?">
         </div>

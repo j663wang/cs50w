@@ -28,13 +28,19 @@ function renderData(data) {
     container.innerHTML = '';  // clear existing   
     data.forEach(post => {
         const postDiv = document.createElement('div');
-        postDiv.classList.add('post');
+        postDiv.classList.add('postContainer');
         postDiv.innerHTML = `
-            <h3>${post.title}</h3>
-            <p>${post.content}</p>
+            <h3 data-id="${post.id}">${post.title}</h3>
+            <button class ="edit-btn" data-id="${post.id}">Edit</button>
+            <p data-id="${post.id}">${post.content}</p>
             <small>By ${post.author} on ${new Date(post.timestamp).toLocaleString()}</small>
+            <button class="like-btn" data-id="${post.id}">Like (${post.likes})</button>
         `;
         container.appendChild(postDiv);
+
+        // Add event listeners for like and edit buttons
+        postDiv.querySelector('.edit-btn').addEventListener('click', () => editPost(post.id, post.userId));
+        postDiv.querySelector('.like-btn').addEventListener('click', () => likePost(post.id));
     });
 }
 
@@ -52,4 +58,20 @@ function renderPagination(totalPages, currentPage) {
         btn.addEventListener('click', () => loadPage(i));
         container.appendChild(btn);
     }
+}
+
+function editPost(postId, userId) {
+    if(userId !== currentUserId) {
+        alert("You can only edit your own posts.");
+        return;
+    }
+    
+    const postContent = document.querySelector(`p[data-id="${postId}"]`);
+
+    
+    
+}
+
+function likePost(){
+
 }
