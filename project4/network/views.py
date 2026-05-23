@@ -98,7 +98,20 @@ def editPost(request,post_id):
 
 @login_required
 def likePost(request, post_id):
-    pass
+    post = Post.objects.filter(id=post_id).first()
+    if post is None:
+        return JsonResponse({
+            "error": "Post not found."
+        }, status=404)
+    
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return JsonResponse({
+        "likes": post.likes.count()
+    })  
 
 def getPost(request, post_id):
     post = Post.objects.filter(id=post_id).first()

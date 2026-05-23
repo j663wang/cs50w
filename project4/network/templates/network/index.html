@@ -1,6 +1,8 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+    {{ request.user.id|json_script:"current-user" }}
+    {{ request.user.is_authenticated|json_script:"is-authenticated" }}
     <h1> All Posts</h1>
     <div id="posts"></div>
     <div id="pagination"></div>

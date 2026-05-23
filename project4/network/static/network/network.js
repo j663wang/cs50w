@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function(){
-
+    const currentUserId = JSON.parse(document.getElementById('current-user').textContent);
+    const isAuthenticated = JSON.parse(document.getElementById('is-authenticated').textContent);
     loadPage(1);
 });
 
@@ -29,6 +30,7 @@ function renderData(data) {
     data.forEach(post => {
         const postDiv = document.createElement('div');
         postDiv.classList.add('postContainer');
+        postDiv.setAttribute('data-id', post.id);
         postDiv.innerHTML = `
             <h3 data-id="${post.id}">${post.title}</h3>
             <button class ="edit-btn" data-id="${post.id}">Edit</button>
@@ -61,17 +63,82 @@ function renderPagination(totalPages, currentPage) {
 }
 
 function editPost(postId, userId) {
+    if(!isAuthenticated) {
+        alert("You must be logged in to edit posts.");
+        return;
+    }
+
     if(userId !== currentUserId) {
         alert("You can only edit your own posts.");
         return;
     }
     
+    const postDiv = document.querySelector(`div[data-id="${postId}"]`);
     const postContent = document.querySelector(`p[data-id="${postId}"]`);
+    const currentContent = postContent.textContent;
+    const editBtn = postDiv.querySelector(`.edit-btn[data-id="${postId}"]`);
 
-    
-    
+    // Replace post content with textarea
+    const textarea = document.createElement('textarea');
+    textarea.value = currentContent;
+    postContent.replaceWith(textarea);
+
+    // Change edit button to save button
+    const saveBtn = document.createElement('button');
+    saveBtn.textContent = 'Save';
+    saveBtn.onclick = () => {
+        const updatedContent = textarea.value;
+        // Send updated content to server
+        fetch(`/posts/${postId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content: updatedContent })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Server error: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Update the post content in the UI
+            postContent.textContent = updatedContent;
+            // Replace the textarea with the updated content
+            textarea.replaceWith(postContent);
+            // Change the save button back to the edit button
+            saveBtn.replaceWith(editBtn);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to update post. Please try again.');
+        });
+    };
+    postDiv.querySelector('.edit-btn').replaceWith(saveBtn);    
 }
 
-function likePost(){
+function likePost(postId) {
+    if(!isAuthenticated) {
+        alert("You must be logged in to like a post.");
+        return;
+    }
 
+    fetch(`/likePost/${postId}`,{
+        method: 'PATCH',
+        headers: {}
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.querySelector(`button.like-btn[data-id="${postId}"]`).textContent = `Like (${data.likes})`;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to like post. Please try again.');
+    });
 }
