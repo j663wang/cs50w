@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}New Account {% endblock %}
+
+{%block body %}
+    <form action="{% url 'accounts:register' %}" method="post">
+        {% csrf_token %}
+        <input autofocus class="form-control" type="text" name="username" placeholder="New Username">
+        <input class="form-control" type="text" name="email" placeholder="Email">
+        <input class="form-control" type="password" name="password" placeholder="Password">
+        <input class="form-control" type="password" name="comfirm_pass" placeholder="Confirm Password">
+        <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+{% endblock %}

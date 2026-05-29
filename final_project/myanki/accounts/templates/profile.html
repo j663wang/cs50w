@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block scripts %}
+    <script src="{% static 'accounts/js/accounts.js' %}"></script>
+{% endblock %}
+
+{% block title %} Profile {% endblock %}
+    
+
+{% block body %}
+    {% if request.user.username == profile_user.username%}
+        <h1> Hi, {{request.user.username}}</h1>
+        <a class="btn btn-primary">Edit Profile</a>
+    {% else %}
+        <h1> {{profile_user.username}}'s Profile</h1>
+        {% if is_following %}
+            <a id="follow_toggle" class="btn btn-primary"> Unfollow </a>
+        {% else %}
+            <a id="follow_toggle" class="btn btn-primary"> Follow </a>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}
