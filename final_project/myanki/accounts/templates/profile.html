@@ -9,16 +9,39 @@
     
 
 {% block body %}
-    {% if request.user.username == profile_user.username%}
-        <h1> Hi, {{request.user.username}}</h1>
-        <a class="btn btn-primary">Edit Profile</a>
-    {% else %}
-        <h1> {{profile_user.username}}'s Profile</h1>
-        {% if is_following %}
-            <a id="follow_toggle" class="btn btn-primary"> Unfollow </a>
+    <div>
+        {% if request.user.username == profile_username%}
+            <h1> Hi, {{request.user.username}}</h1>
+            <a class="btn btn-primary">Edit Profile</a>
+            <a >Currently I have followers: {{followers}}</a>
+            <a> Currently following: {{following}}</a>
         {% else %}
-            <a id="follow_toggle" class="btn btn-primary"> Follow </a>
+            <h1> {{profile_username}}'s Profile</h1>
+            {% if is_following %}
+                <a id="follow-toggle" class="btn btn-primary"> Unfollow {{followers}}</a>
+            {% else %}
+                <a id="follow-toggle" class="btn btn-primary"> Follow {{following}} </a>
+            {% endif %}
         {% endif %}
-    {% endif %}
+
+        <p class="text-muted" id="user-bio">{{short_bio}}</p>
+        
+        <div class="deck-scroll">
+            {% for deck in best_10_decks %}
+                <div class="deck_scroll-item" style="width: 18rem;">
+                    <div class="deck_body">
+                        <h5 class="deck-title">{{ deck.name }}</h5>
+                        <p class="deck-text">{{ deck.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+            
+        <div id="comment-container" data-username="{{ profile_username }}">
+            <h3>Comments</h3>
+            <div id="comment-list" data-username="{{ profile_username }}"></div>
+            <div id="pagination"></div>
+        </div>      
+    </div>
 
 {% endblock %}

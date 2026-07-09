@@ -75,7 +75,8 @@ def profile_view(request, username):
         "email": user.email,
         "followers": followers_num,
         "following": following_num,
-        "is_following": is_following
+        "is_following": is_following,
+        "short_bio": user.bio[:50] + "..." if len(user.bio) > 50 else user.bio,
     })
     
 
